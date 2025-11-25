@@ -9,7 +9,7 @@ import java.util.Scanner;
  *    1- opening student page
  *    2- submitting a new request
  */
-
+ 
 public class Student extends User {
 
     public Student(String role, String userId, String password) {

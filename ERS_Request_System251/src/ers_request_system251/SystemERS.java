@@ -8,7 +8,7 @@ import java.util.*;
  * This class represents the main system controller for the IELTS Exemption Request System (ERS).
  * It handles loading majors, tracks, minimum scores.
  * This class is used by Student, Staff, and Admin components.
- * 
+ *
  * Jory:
  * - Handles saving and retrieving student requests.
  * - Methods:
@@ -16,7 +16,7 @@ import java.util.*;
  *      • fetchAllRequests()
  *      • findRequestByID(String reqID)
  */
-
+ 
 public class SystemERS {
 
     // ====== DATA STRUCTURES ======
