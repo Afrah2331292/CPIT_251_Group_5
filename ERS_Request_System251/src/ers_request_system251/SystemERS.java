@@ -6,9 +6,17 @@ import java.util.*;
 /**
  * Hana:
  * This class represents the main system controller for the IELTS Exemption Request System (ERS).
- * It handles loading majors, tracks, minimum scores, and reading/writing student requests.
+ * It handles loading majors, tracks, minimum scores.
  * This class is used by Student, Staff, and Admin components.
+ * 
+ * Jory:
+ * - Handles saving and retrieving student requests.
+ * - Methods:
+ *      • saveNewRequest(Request r)
+ *      • fetchAllRequests()
+ *      • findRequestByID(String reqID)
  */
+
 public class SystemERS {
 
     // ====== DATA STRUCTURES ======
@@ -140,54 +148,49 @@ public class SystemERS {
     public float getMinScore(String t) { 
         return minimumScores.get(t); 
     }
-
+    
     /**
-     * Hana:
-     * Saves a new request to the requests.txt file.
-     * Each request is stored as one line in CSV format.
-     *
-     * @param r Request object
-     * @return same Request object
+     * Jory:
+     * Saves a new student request to the file.
      */
-    public Request saveNewRequest(Request r) {
-        FileManager.appendLine(REQUEST_FILE, r.toFileFormat());
-        return r;
+    public Request saveNewRequest(Request req) {
+        FileManager.appendLine(REQUEST_FILE, req.toFileFormat());
+        return req;
     }
-
+    
     /**
-     * Hana:
-     * Reads all request entries from the file and converts them into Request objects.
-     * This method is used by staff and admin to display requests.
-     *
-     * @return list of all Request objects from the file
+     * Jory:
+     * Reads all request entries from the file. 
+     * converts each line into Request objects.
      */
     public List<Request> fetchAllRequests() {
         List<String> lines = FileManager.readFile(REQUEST_FILE);
         List<Request> list = new ArrayList<>();
 
         for (String line : lines) {
-            String[] p = line.split(",");
+            String[] parts = line.split(",");
 
-            if (p.length < 10) continue;
-
-            String reqId = p[0];
-            String studentId = p[1];
-            String name = p[2];
-            String major = p[3];
-            String cert = p[4];
-            float score = Float.parseFloat(p[5]);
-            String v = p[7];
-            String a = p[8];
-            String g = p[9];
-
-            list.add(new Request(reqId, studentId, name, major, cert, score, v, a, g));
+            if (parts.length < 10) continue;
+            
+            Request req = new Request(
+                parts[0],      //reqId
+                parts[1],      //studentId
+                parts[2],      //student name
+                parts[3],      //major
+                parts[4],      //certificate
+                Float.parseFloat(parts[5]),     //score
+                parts[7],      //valid status
+                parts[8],      //approval status
+                parts[9]       //final status
+            );
+            list.add(req);
         }
 
         return list;
     }
 
     /**
-     * Hana:
+     * Jory:
      * Searches for a specific request by its Request ID.
      * Used when staff/admin need to open or update a request.
      *
@@ -195,10 +198,11 @@ public class SystemERS {
      * @return Request object if found, otherwise null
      */
     public Request findRequestByID(String reqID) {
-        for (Request r : fetchAllRequests())
-            if (r.getRequestId().equals(reqID))
-                return r;
-
-        return null;
+        for (Request req : fetchAllRequests()){
+            if (req.getRequestId().equals(reqID)){
+                return req;
+            }
+        }
+        return null;    //not found
     }
 }
