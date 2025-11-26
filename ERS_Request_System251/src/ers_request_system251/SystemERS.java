@@ -205,4 +205,90 @@ public class SystemERS {
         }
         return null;    //not found
     }
+/*  
+ *   Raghad
+ *   This method updates the validation status of a specific request.
+ *   Steps:
+ *   1- Read all request lines from file
+ *   2- Locate the request by ID
+ *   3- Update validation column + general status column
+ *   4- Rewrite updated content back to file
+ */
+public void updateValidationStatus(String reqID, String newStatus) {
+    List<String> lines = FileManager.readFile(REQUEST_FILE);
+    List<String> updated = new ArrayList<>();
+
+    for (String line : lines) {
+        String[] p = line.split(",");
+
+        // Ensure the line has the correct number of columns
+        if (p.length < 10) continue;
+
+        // Find the matching request
+        if (p[0].equals(reqID)) {
+            p[7] = newStatus;  // Update validation status column
+            p[9] = newStatus;  // Update general status column
+            line = String.join(",", p);
+        }
+
+        updated.add(line);
+    }
+
+    // Save changes
+    FileManager.writeAll(REQUEST_FILE, updated);
+}
+
+  /*
+    Raghad
+   This method returns all requests that have been validated.
+ *   Steps:
+ *   1- Load all requests from file
+ *   2- Filter requests where validation = "Validated"
+ *   3- Return the filtered list
+ */
+public List<Request> fetchVerifiedRequests() {
+    List<Request> list = fetchAllRequests();
+    List<Request> verified = new ArrayList<>();
+
+    for (Request r : list) {
+        if (r.getValidationStatus().equalsIgnoreCase("Validated")) {
+            verified.add(r);
+        }
+    }
+    return verified;
+}
+
+   /*
+ *   Raghad
+ 
+ *   This method updates the approval status of a request.
+ *   Steps:
+ *   1- Read file content
+ *   2- Find request by ID
+ *   3- Update approval column + general status column
+ *   4- Write updated result back to file
+ */
+public void updateApprovalStatus(String reqID, String status) {
+    List<String> lines = FileManager.readFile(REQUEST_FILE);
+    List<String> updated = new ArrayList<>();
+
+    for (String line : lines) {
+        String[] p = line.split(",");
+
+        if (p.length < 10) continue;
+
+        if (p[0].equals(reqID)) {
+            p[8] = status;  // Approval status
+            p[9] = status;  // General status
+            line = String.join(",", p);
+        }
+
+        updated.add(line);
+    }
+
+    FileManager.writeAll(REQUEST_FILE, updated);
+}
+
+
+  
 }

@@ -75,4 +75,26 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+   /*
+ *   Raghad 
+ *   This method overwrites the file with new content.
+ *   Steps:
+ *   1- Open file in overwrite mode
+ *   2- Write each line from the list
+ *   3- Close writer
+ */
+public static void writeAll(String path, List<String> lines) {
+    try {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path, false));
+        for (String s : lines) {
+            bw.write(s);
+            bw.newLine();
+        }
+        bw.close();
+    } catch (Exception e) { 
+        e.printStackTrace(); 
+    }
+}
+
+    
 }
