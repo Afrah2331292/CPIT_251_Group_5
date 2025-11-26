@@ -53,7 +53,7 @@ public class InstituteStaff extends User {
 
             // If request already has validation status, ask to overwrite
             if (!r.getValidationStatus().equalsIgnoreCase("Submitted")) {
-                System.out.println("\n⚠ This request already has validation status: "
+                System.out.println("\n This request already has validation status: "
                         + r.getValidationStatus());
                 System.out.print("Do you want to change it? (yes/no): ");
 
