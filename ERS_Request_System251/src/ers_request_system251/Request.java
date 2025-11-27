@@ -15,7 +15,7 @@ public class Request {
     private float score;
     private Date requestDate;
 
-    private String validationStatus = "Submitted";
+    private String validationStatus = "Validate";
     private String approvalStatus = "Pending";
     private String generalStatus = "Submitted";
 
@@ -149,7 +149,7 @@ public class Request {
      * Hana:
      * Returns the general status of the request (based on validation + approval).
      */
-    public String getStatus() { return generalStatus; }
+    public String getStatus() { return validationStatus; }
 
     /**
      * Hana:
@@ -176,7 +176,7 @@ public class Request {
      * Updates the approval status and synchronizes it with the general status.
      * Used by Dean/Administrator.
      */
-    public void setApprovalStatus(String status) {
+   public void setApprovalStatus(String status) {
         this.approvalStatus = status;
         this.generalStatus = status;
     }

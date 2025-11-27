@@ -280,10 +280,11 @@ public void updateValidationStatus(String reqID, String newStatus) {
             
             if (fields[0].equals(reqID)) {
                 fields[8] = status;  //Approval status
-                fields[9] = status;  //General status
+                fields[9] = status;  //Approval status
+
                 line = String.join(",", fields);
                 }
-            
+             
             updatedLines.add(line);
             }
         
