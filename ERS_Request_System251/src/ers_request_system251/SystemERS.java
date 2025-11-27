@@ -241,9 +241,9 @@ public void updateValidationStatus(String reqID, String newStatus) {
 
      /* Lena:
     Returns all the requests that is validated.
-    Load all requests from file
-    Filter requests where validation = "Validated"
-    Return the filtered list
+    -Load all requests from file
+    -Filter requests where validation = "Validated"
+    -Return the filtered list
     */
  
     public List<Request> fetchVerifiedRequests() {
@@ -257,5 +257,37 @@ public void updateValidationStatus(String reqID, String newStatus) {
                 }
             }
         return verified; //Return only validated requests
+        }
+    
+    /* Lena:
+    Updates the approval status of a request.
+    Steps:
+    -Read file content
+    -Find request by ID
+    -Update approval column + general status column
+    -Write updated result back to file
+    */
+    
+    public void updateApprovalStatus(String reqID, String status) {
+        
+        List<String> fileLines = FileManager.readFile(REQUEST_FILE);  //Read all lines
+        List<String> updatedLines = new ArrayList<>(); //Store updated lines
+        
+        for (String line : fileLines) {
+            String[] fields = line.split(","); //Split the line
+            
+            if (fields.length < 10) continue;
+            
+            if (fields[0].equals(reqID)) {
+                fields[8] = status;  //Approval status
+                fields[9] = status;  //General status
+                line = String.join(",", fields);
+                }
+            
+            updatedLines.add(line);
+            }
+        
+        //Saving all lines back to the file
+        FileManager.writeAll(REQUEST_FILE, updatedLines);
         }
     }
