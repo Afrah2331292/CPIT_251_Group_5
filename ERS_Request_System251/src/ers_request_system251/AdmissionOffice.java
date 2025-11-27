@@ -13,8 +13,7 @@ import java.util.Scanner;
  *   2- Showing all validated requests
  *   3- Approving requests
  */
-public class AdmissionOffice extends User{
-    
+public class AdmissionOffice extends User{   
     public AdmissionOffice(String role, String userId, String password) {
         super(role, userId, password);
         }
@@ -95,5 +94,3 @@ public class AdmissionOffice extends User{
         System.out.println("========================================================================================================================================================");
     }
 }
-
-    
