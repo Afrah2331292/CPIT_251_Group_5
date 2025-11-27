@@ -237,4 +237,25 @@ public void updateValidationStatus(String reqID, String newStatus) {
     // Save changes
     FileManager.writeAll(REQUEST_FILE, updated);
 }
-}
+
+
+     /* Lena:
+    Returns all the requests that is validated.
+    Load all requests from file
+    Filter requests where validation = "Validated"
+    Return the filtered list
+    */
+ 
+    public List<Request> fetchVerifiedRequests() {
+        List<Request> list = fetchAllRequests(); //Load all requests from file
+        List<Request> verified = new ArrayList<>();
+        
+        for (Request valid : list) {
+            //Check if the request has status = "Validated"
+            if (valid.getValidationStatus().equalsIgnoreCase("Validated")) {
+                verified.add(valid); //Add to verified list
+                }
+            }
+        return verified; //Return only validated requests
+        }
+    }
