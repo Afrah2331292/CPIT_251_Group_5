@@ -1,13 +1,15 @@
 package ers_request_system251;
 
-import java.util.*;
+import java.util.Scanner;
 
-
+//This is Afrah's section
+//------------------------
 public class Main {
 
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
+        SystemERS system = new SystemERS();
 
         // Ask the user to enter their ID
         System.out.print("Enter ID: ");
@@ -23,33 +25,26 @@ public class Main {
         // Check if login failed (user not found or incorrect credentials)
         if (user == null) {
             System.out.println("Login failed.");
-            System.exit(0); // End the program
+            System.exit(0);
         }
 
-        // If login succeeds, you can continue your program here...
-        
-        
+        // User login succeeded — open the correct page
         switch (user.getRole()) {
 
-        case "student":
-           
-            break;
+            case "student": // student login page
+                ((Student) user).openStudentPage(system);
+                break;
 
-        case "institute":   // staff
-           
-            break;
+            case "institute":   // staff login page
+                ((InstituteStaff) user).openStaffPage(system);
+                break;
 
-        case "admission":   // admin
-          
-            break;
+            case "dean":   // dean login page
+                ((AdmissionOffice) user).openAdminPage(system);
+                break;
 
-        case "dean":        // dean 
-          
-            break;
-
-        default:
-            System.out.println("Unknown role.");
-    }
+            default: 
+                System.out.println("Unknown role.");
+        }
     }
 }
-
