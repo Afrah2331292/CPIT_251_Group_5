@@ -11,11 +11,10 @@ Lena:
 Unit Test for Request class
 Methods:
 - setValidationStatus()
-- setApprovalStatus()
 Steps:
 1- First request from requests.txt
 2- Convert line into a Request object
-3- Apply status methods
+3- Apply method
 */
 
 public class Request_UnitTest {
