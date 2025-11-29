@@ -40,7 +40,7 @@ public class Main {
                 break;
 
             case "dean":   // dean login page
-              //  ((AdmissionOffice) user).openAdminPage(system);
+                ((AdmissionOffice) user).openAdminPage(system);
                 break;
 
             default: 

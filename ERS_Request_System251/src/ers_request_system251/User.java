@@ -36,7 +36,7 @@ public class User {
     // ------------------------------
     public static User login(String id, String pass) {
         // Attempt to read the users file
-        try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("/Users/lena/Desktop/users.txt"))) {
 
             String line;
             // Read the file line by line
@@ -62,8 +62,8 @@ public class User {
                     case "institute":
                         return new InstituteStaff(role, fileId, filePass);
 
-                    case "dean":  // NOTE: If using Main with "admission", this should be "admission"
-                       // return new AdmissionOffice(role, fileId, filePass);
+                    case "dean": 
+                        return new AdmissionOffice(role, fileId, filePass);
                 }
             }
 
