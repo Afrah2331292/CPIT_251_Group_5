@@ -62,6 +62,67 @@ public class SystemERSIT {
         // Score below minimum → rejected
         assertFalse(s.verifyScore("ELIS", 3f));
     }
+    //Raghad 
+    
+    
+ @Test
+public void testFetchAllRequests() {
+    System.out.println("Testing fetchAllRequests() method...");
+    
+    SystemERS system = new SystemERS();
+    List<Request> allRequests = system.fetchAllRequests();
+    
+    // Verify method returns a list (not null)
+    assertNotNull("Method should return non-null list", allRequests);
+    
+    // Print total count for verification
+    System.out.println("Total requests in system: " + allRequests.size());
+    
+    // If requests exist, verify data integrity
+    if (!allRequests.isEmpty()) {
+        Request firstRequest = allRequests.get(0);
+        
+        // Verify request object and key fields
+        assertNotNull("First request object should not be null", firstRequest);
+        assertNotNull("Request ID should not be null", firstRequest.getRequestId());
+        assertNotNull("Student name should not be null", firstRequest.getStudentName());
+        
+        // Display sample request details
+        System.out.println("Sample request - ID: " + firstRequest.getRequestId() + 
+                         ", Student: " + firstRequest.getStudentName() +
+                         ", Major: " + firstRequest.getStudentMajor());
+    } else {
+        System.out.println("No requests found in the system");
+    }
+}
+
+@Test
+public void testFetchVerifiedRequests() {
+    System.out.println("Testing fetchVerifiedRequests() method...");
+    
+    SystemERS system = new SystemERS();
+    List<Request> verifiedRequests = system.fetchVerifiedRequests();
+    
+    // Verify method returns a list (not null)
+    assertNotNull("Method should return non-null list", verifiedRequests);
+    
+    // Verify ALL requests have "Validated" status
+    for (Request request : verifiedRequests) {
+        assertEquals("All requests must have 'Validated' status", 
+                    "Validated", 
+                    request.getValidationStatus());
+    }
+    
+    // Print count of validated requests
+    System.out.println("Validated requests count: " + verifiedRequests.size());
+    
+    // Display details of each validated request
+    for (Request request : verifiedRequests) {
+        System.out.println("Validated Request - ID: " + request.getRequestId() + 
+                         ", Student: " + request.getStudentName() +
+                         ", Status: " + request.getValidationStatus());
+    }
+}
 
 
 
