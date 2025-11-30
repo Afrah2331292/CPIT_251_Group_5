@@ -1,110 +1,120 @@
-//import ers_request_system251.Request;
+import ers_request_system251.Request;
 import ers_request_system251.Student;
 import ers_request_system251.SystemERS;
-//import org.junit.Test;
-//import static org.junit.Assert.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-//This is Afrah's Unit Test Section 
+import static org.junit.Assert.*; // JUnit 4 assert
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Before; 
+import org.junit.After; 
+import org.junit.Test;   
+
+import ers_request_system251.FileManager;
+
+// This is Afrah's Unit Test Section
 //-----------------------------------------------------------
 
 public class ApprovalStatus_UnitTest {
+    // ----------------------------
+    // Constants for test file paths (used to create test files)
+    // ----------------------------
+    private static final String READ_TEST_FILE  = "test_readFile.txt"; // File used for readFile() test
+    private static final String WRITE_FILE = "test_writeFile.txt";     // File used for writeAll() test
+    private static final String TEST_REQUEST_FILE = "test_requests.txt"; // File used for approval update test
+    
+    // --------------------------------
+    // Setup method runs before each test
+    // Creates required files for test cases
+    // --------------------------------
+    @Before
+    public void setUp() throws IOException {
+        // Create a file containing 3 lines for readFile() test
+        FileWriter writer = new FileWriter(READ_TEST_FILE);
+        writer.write("Line1\nLine2\nLine3");
+        writer.close();
 
- // ----------------------------
- // Constants for test file paths
- // ----------------------------
- private static final String READ_TEST_FILE = "test_readFile.txt";
- private static final String WRITE_FILE = "test_writeFile.txt";
- private static final String TEST_REQUEST_FILE = "test_requests.txt";
+        // Create a requests file to simulate updating approval status
+        FileManager.writeAll(TEST_REQUEST_FILE, Arrays.asList(
+            "REQ001,John,Doe,Dept1,2025-11-27,Desc1,TypeA,Cat1,Pending,Pending", // First request (will be updated)
+            "REQ002,Jane,Smith,Dept2,2025-11-28,Desc2,TypeB,Cat2,Pending,Pending"  // Second request (will remain)
+        ));
+    }
+    
+    //-----------------------------------------------------------------
+    // Test for readFile method
+    // Ensures file content is read correctly line by line
+    //-----------------------------------------------------------------
+    @Test
+    public void testReadFile() {
+        List<String> lines = FileManager.readFile(READ_TEST_FILE);
 
- // --------------------------------
- // Setup method runs before each test
- // --------------------------------
- @Before
- void setUp() throws IOException {
-     // Prepare a simple file for testing the readFile method
-     FileWriter writer = new FileWriter(READ_TEST_FILE);
-     writer.write("Line1\nLine2\nLine3");
-     writer.close(); // flush is not needed here
+        assertEquals(3, lines.size());          // Check number of lines
+        assertEquals("Line1", lines.get(0));    // First line
+        assertEquals("Line2", lines.get(1));    // Second line
+        assertEquals("Line3", lines.get(2));    // Third line
+    }
 
-     // Prepare a test file for updateApprovalStatus simulation
-     FileManager.writeAll(TEST_REQUEST_FILE, List.of(
-         "REQ001,John,Doe,Dept1,2025-11-27,Desc1,TypeA,Cat1,Pending,Pending",
-         "REQ002,Jane,Smith,Dept2,2025-11-28,Desc2,TypeB,Cat2,Pending,Pending"
-     ));
- }
+    //-----------------------------------------------------------------
+    // Test for writeAll method
+    // Writes a list of strings to a file, then reads it back and compares
+    //-----------------------------------------------------------------
+    @Test
+    public void testWriteAll() throws IOException {
+        List<String> linesToWrite = Arrays.asList("Hello", "World", "JUnit");
 
- //-----------------------------------------------------------------
- // Test for readFile method
- //-----------------------------------------------------------------
- @Test
- void testReadFile() {
-     // Call the readFile method
-     List<String> lines = FileManager.readFile(READ_TEST_FILE);
+        FileManager.writeAll(WRITE_FILE, linesToWrite); // Write test data to file
 
-     // Check the number of lines read
-     assertEquals(3, lines.size(), "Should read 3 lines");
+        List<String> readLines = FileManager.readFile(WRITE_FILE); // Read file content
+        assertEquals(linesToWrite, readLines); // Check if written == read
+    }
 
-     // Check the content of each line
-     assertEquals("Line1", lines.get(0));
-     assertEquals("Line2", lines.get(1));
-     assertEquals("Line3", lines.get(2));
- }
+    //-----------------------------------------------------------------
+    // Test for manually updating approval status
+    // Edits the status of REQ001 to "Approved" then verifies file changes
+    //-----------------------------------------------------------------
+    @Test
+    public void updateApprovalStatus() throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(TEST_REQUEST_FILE)); // Read original file
+        List<String> updated = new ArrayList<>(); // Store updated lines
 
- //-----------------------------------------------------------------
- // Test for writeAll method
- //-----------------------------------------------------------------
- @Test
- void testWriteAll() throws IOException {
-     // Prepare some lines to write
-     List<String> linesToWrite = Arrays.asList("Hello", "World", "JUnit");
+        for (String line : lines) {
+            if (line.startsWith("REQ001,")) { // Find the request that needs updating
+                String[] parts = line.split(","); // Split into columns
 
-     // Call writeAll to write the lines into the file
-     FileManager.writeAll(WRITE_FILE, linesToWrite);
+                // Update last two fields (status fields)
+                parts[parts.length - 1] = "Approved"; // Final status
+                parts[parts.length - 2] = "Approved"; // Initial status
 
-     // Read the file back and verify the content
-     List<String> readLines = FileManager.readFile(WRITE_FILE);
-     assertEquals(linesToWrite, readLines, "File content should match written lines");
- }
+                updated.add(String.join(",", parts)); // Rebuild updated line
+            } else {
+                updated.add(line); // Keep other lines the same
+            }
+        }
 
- //-----------------------------------------------------------------
- // Test for direct status update (without using FileManager helper)
- //-----------------------------------------------------------------
- @Test
- void updateApprovalStatus() throws IOException {
-     // Read all lines from the test request file
-     List<String> lines = Files.readAllLines(Paths.get(TEST_REQUEST_FILE));
-     List<String> updated = new ArrayList<>();
+        Files.write(Paths.get(TEST_REQUEST_FILE), updated); // Save updated data
 
-     for (String line : lines) {
-         // If the line corresponds to REQ001, update approval and general status
-         if (line.startsWith("REQ001,")) {
-             String[] parts = line.split(",");
-             parts[parts.length - 1] = "Approved"; // Update general status
-             parts[parts.length - 2] = "Approved"; // Update approval status
-             updated.add(String.join(",", parts));
-         } else {
-             // Keep other lines unchanged
-             updated.add(line);
-         }
-     }
+        List<String> newLines = Files.readAllLines(Paths.get(TEST_REQUEST_FILE)); // Read updated file
+        assertTrue(newLines.get(0).contains("Approved")); // First request updated
+        assertTrue(newLines.get(1).contains("Pending"));  // Second request unchanged
+    }
 
-     // Write updated lines back to the file
-     Files.write(Paths.get(TEST_REQUEST_FILE), updated);
-
-     // Verify that the first request was updated and the second stayed unchanged
-     List<String> newLines = Files.readAllLines(Paths.get(TEST_REQUEST_FILE));
-     assertTrue(newLines.get(0).contains("Approved"), "REQ001 should be approved");
-     assertTrue(newLines.get(1).contains("Pending"), "REQ002 should remain pending");
- }
-
- //-----------------------------------------------------------------
- // fileDelete method runs after each test
- //-----------------------------------------------------------------
- @After
- void fileDelete() throws IOException {
-     // Delete all test files if they exist
-     Files.deleteIfExists(Paths.get(READ_TEST_FILE));
-     Files.deleteIfExists(Paths.get(WRITE_FILE));
-     Files.deleteIfExists(Paths.get(TEST_REQUEST_FILE));
- }
+    //-----------------------------------------------------------------
+    // fileDelete method runs after each test
+    // Cleans up and removes temporary test files
+    //-----------------------------------------------------------------
+    @After
+    public void fileDelete() throws IOException {
+        Files.deleteIfExists(Paths.get(READ_TEST_FILE));
+        Files.deleteIfExists(Paths.get(WRITE_FILE));
+        Files.deleteIfExists(Paths.get(TEST_REQUEST_FILE));
+    }
 }
