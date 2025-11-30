@@ -36,7 +36,7 @@ public class User {
     // ------------------------------
     public static User login(String id, String pass) {
         // Attempt to read the users file
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\gunda\\Documents\\NetBeansProjects\\CPIT_251_Group_5\\ERS_Request_System251\\data\\users.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("/Users/lena/Desktop/users.txt"))) {
 
             String line;
             // Read the file line by line
