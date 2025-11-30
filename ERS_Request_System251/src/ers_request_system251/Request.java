@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Date;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
+
 
 public class Request {
 
@@ -15,9 +17,9 @@ public class Request {
     private float score;
     private Date requestDate;
 
-    private String validationStatus = "Validate";
+      private String validationStatus = "Submitted";;
     private String approvalStatus = "Pending";
-    private String generalStatus = "Submitted";
+
 
     /**
      * Hana:
@@ -41,7 +43,7 @@ public class Request {
      * This allows the system to recreate Request objects that were saved earlier.
      */
     public Request(String reqId, String stdId, String name, String major, String code,
-                   float score, String vStatus, String aStatus, String gStatus) {
+                   float score, String vStatus, String aStatus) {
 
         this.requestId = reqId;
         this.studentId = stdId;
@@ -52,8 +54,7 @@ public class Request {
         this.requestDate = new Date();  // In real use, you can load the actual saved timestamp.
         this.validationStatus = vStatus;
         this.approvalStatus = aStatus;
-        this.generalStatus = gStatus;
-    }
+          }
 
     /**
      * Hana:
@@ -96,6 +97,8 @@ public class Request {
 
         return nextID;
     }
+
+
 
     /**
      * Hana:
@@ -168,7 +171,7 @@ public class Request {
      */
     public void setValidationStatus(String status) {
         this.validationStatus = status;
-        this.generalStatus = status;
+     
     }
 
     /**
@@ -178,7 +181,7 @@ public class Request {
      */
    public void setApprovalStatus(String status) {
         this.approvalStatus = status;
-        this.generalStatus = status;
+    
     }
 
     /**
@@ -186,16 +189,16 @@ public class Request {
      * Converts all request information into a single line.
      * This format is used when saving the request into the file request.txt.
      */
-    public String toFileFormat() {
-        return requestId + "," +
-               studentId + "," +
-               studentName + "," +
-               studentMajor + "," +
-               certificateCode + "," +
-               score + "," +
-               requestDate.getTime() + "," +
-               validationStatus + "," +
-               approvalStatus + "," +
-               generalStatus;
-    }
+  public String toFileFormat() {
+    return requestId + "," +
+           studentId + "," +
+           studentName + "," +
+           studentMajor + "," +
+           certificateCode + "," +
+           score + "," +
+           new SimpleDateFormat("dd/MM/yyyy").format(requestDate) + "," +
+           validationStatus + "," +
+           approvalStatus;
+}
+
 }

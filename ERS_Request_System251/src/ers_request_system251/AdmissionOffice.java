@@ -61,35 +61,34 @@ public class AdmissionOffice extends User{
         }
     }
 
-    private void displayTable(SystemERS system, List<Request> list) {
+   private void displayTable(SystemERS system, List<Request> list) {
 
-        System.out.println("\n========================================================================================================================================================");
-        System.out.println("| Request ID | Student ID   | Name            | Major               | CertCode | Score | Track | Validation | Approval | Status   | Date       |");
-        System.out.println("========================================================================================================================================================");
+    System.out.println("\n================================================================================================================================================");
+    System.out.println("| ReqID | StdID   | Name            | Major               | CertCode | Score | Track | Validation | Approval | Date       |");
+    System.out.println("================================================================================================================================================");
 
-        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy"); //For date format
+    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-        for (Request req : list) {
-            
-            //Readable date
-            String date = dateF.format(new Date(req.getRequestDate()));
+    for (Request r : list) {
 
-            //Print each request
-            System.out.printf(
-                "| %-5s | %-7s | %-15s | %-18s | %-8s | %-5.1f | %-5s | %-10s | %-8s | %-8s | %-10s |\n",
-                req.getRequestId(),
-                req.getStudentId(),
-                req.getStudentName(),
-                req.getStudentMajor(),
-                req.getCertificateCode(),
-                req.getScore(),
-                system.getTrack(req.getStudentMajor()),
-                req.getValidationStatus(),
-                req.getApprovalStatus(),
-                req.getStatus(),
-                date
-            );
-        }
-        System.out.println("========================================================================================================================================================");
+        String dateStr = df.format(new Date(r.getRequestDate()));
+
+        System.out.printf(
+            "| %-5s | %-7s | %-15s | %-18s | %-8s | %-5.1f | %-5s | %-10s | %-8s | %-10s |\n",
+            r.getRequestId(),
+            r.getStudentId(),
+            r.getStudentName(),
+            r.getStudentMajor(),
+            r.getCertificateCode(),
+            r.getScore(),
+            system.getTrack(r.getStudentMajor()),
+            r.getValidationStatus(),
+            r.getApprovalStatus(),
+            dateStr
+        );
     }
+
+    System.out.println("================================================================================================================================================");
+}
+
 }

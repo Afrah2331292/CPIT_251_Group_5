@@ -35,19 +35,17 @@ public class Request_UnitTest {
         String line = lines.get(0);
         String[] p = line.split(",");
 
-        //Request object
-        sampleRequest = new Request(
-                p[0],      //RequestId
-                p[1],      //StudentId
-                p[2],      //Name
-                p[3],      //Major
-                p[4],      //Certificate
-                Float.parseFloat(p[5]), //Score
-                p[7],      //validation status
-                p[8],      //Approval status
-                p[9]       //General status
-                );
-        }
+
+sampleRequest = new Request(
+    p[0],            // requestId
+    p[1],            // studentId
+    p[2],            // name
+    p[3],            // major
+    p[4],            // certificate
+    Float.parseFloat(p[5]), // score
+    p[7],            // validation
+    p[8]             // approval
+);}
 
     @Test
     public void testSetValidationStatus() {

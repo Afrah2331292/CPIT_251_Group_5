@@ -86,34 +86,34 @@ public class InstituteStaff extends User {
     /*
      * Display all requests in table format for staff
      */
-    private void displayTable(SystemERS system, List<Request> list) {
+private void displayTable(SystemERS system, List<Request> list) {
 
-        System.out.println("\n========================================================================================================================================================");
-        System.out.println("| ReqID | StdID   | Name            | Major               | CertCode | Score | Track | Validation | Approval | Status   | Date       |");
-        System.out.println("========================================================================================================================================================");
+    System.out.println("\n================================================================================================================================================");
+    System.out.println("| ReqID | StdID   | Name            | Major               | CertCode | Score | Track | Validation | Approval | Date       |");
+    System.out.println("================================================================================================================================================");
 
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-        for (Request r : list) {
+    for (Request r : list) {
 
-            String dateStr = df.format(new Date(r.getRequestDate()));
+        String dateStr = df.format(new Date(r.getRequestDate()));
 
-            System.out.printf(
-                "| %-5s | %-7s | %-15s | %-18s | %-8s | %-5.1f | %-5s | %-10s | %-8s | %-8s | %-10s |\n",
-                r.getRequestId(),
-                r.getStudentId(),
-                r.getStudentName(),
-                r.getStudentMajor(),
-                r.getCertificateCode(),
-                r.getScore(),
-                system.getTrack(r.getStudentMajor()),
-                r.getValidationStatus(),
-                r.getApprovalStatus(),
-                r.getStatus(),
-                dateStr
-            );
-        }
-
-        System.out.println("========================================================================================================================================================");
+        System.out.printf(
+            "| %-5s | %-7s | %-15s | %-18s | %-8s | %-5.1f | %-5s | %-10s | %-8s | %-10s |\n",
+            r.getRequestId(),
+            r.getStudentId(),
+            r.getStudentName(),
+            r.getStudentMajor(),
+            r.getCertificateCode(),
+            r.getScore(),
+            system.getTrack(r.getStudentMajor()),
+            r.getValidationStatus(),
+            r.getApprovalStatus(),
+            dateStr
+        );
     }
+
+    System.out.println("================================================================================================================================================");
+}
+
 }

@@ -163,31 +163,35 @@ public class SystemERS {
      * Reads all request entries from the file. 
      * converts each line into Request objects.
      */
-    public List<Request> fetchAllRequests() {
-        List<String> lines = FileManager.readFile(REQUEST_FILE);
-        List<Request> list = new ArrayList<>();
+public List<Request> fetchAllRequests() {
+    List<String> lines = FileManager.readFile(REQUEST_FILE);
+    List<Request> list = new ArrayList<>();
 
-        for (String line : lines) {
-            String[] parts = line.split(",");
+    for (String line : lines) {
+        String[] parts = line.split(",");
 
-            if (parts.length < 10) continue;
-            
-            Request req = new Request(
-                parts[0],      //reqId
-                parts[1],      //studentId
-                parts[2],      //student name
-                parts[3],      //major
-                parts[4],      //certificate
-                Float.parseFloat(parts[5]),     //score
-                parts[7],      //valid status
-                parts[8],      //approval status
-                parts[9]       //final status
-            );
-            list.add(req);
-        }
+        // We expect EXACTLY 9 parts (request format)
+        // 0=reqId, 1=studentId, 2=name, 3=major, 4=certificate
+        // 5=score, 6=requestDate(ms), 7=validation, 8=approval
+        if (parts.length < 9) continue;
 
-        return list;
+        Request req = new Request(
+            parts[0],                                // reqId
+            parts[1],                                // studentId
+            parts[2],                                // student name
+            parts[3],                                // major
+            parts[4],                                // certificate
+            Float.parseFloat(parts[5]),              // score
+            parts[7],                                // validation status
+            parts[8]                                 // approval status
+        );
+
+        list.add(req);
     }
+
+    return list;
+}
+
 
     /**
      * Jory:
