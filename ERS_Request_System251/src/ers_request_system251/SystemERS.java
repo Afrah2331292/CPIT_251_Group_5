@@ -226,13 +226,12 @@ public void updateValidationStatus(String reqID, String newStatus) {
         String[] p = line.split(",");
 
         // Ensure the line has the correct number of columns
-        if (p.length < 10) continue;
+        if (p.length < 9) continue;
 
         // Find the matching request
         if (p[0].equals(reqID)) {
             p[7] = newStatus;  // Update validation status column
-            p[9] = newStatus;  // Update general status column
-            line = String.join(",", p);
+             line = String.join(",", p);
         }
 
         updated.add(line);
@@ -280,12 +279,10 @@ public void updateValidationStatus(String reqID, String newStatus) {
         for (String line : fileLines) {
             String[] fields = line.split(","); //Split the line
             
-            if (fields.length < 10) continue;
+            if (fields.length < 9) continue;
             
             if (fields[0].equals(reqID)) {
                 fields[8] = status;  //Approval status
-                fields[9] = status;  //Approval status
-
                 line = String.join(",", fields);
                 }
              

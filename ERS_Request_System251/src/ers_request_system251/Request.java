@@ -17,7 +17,7 @@ public class Request {
     private float score;
     private Date requestDate;
 
-      private String validationStatus = "Submitted";;
+    private String validationStatus = "Submitted";;
     private String approvalStatus = "Pending";
 
 
@@ -198,7 +198,6 @@ public class Request {
            score + "," +
            new SimpleDateFormat("dd/MM/yyyy").format(requestDate) + "," +
            validationStatus + "," +
-           approvalStatus;
+           approvalStatus ;
 }
-
 }
