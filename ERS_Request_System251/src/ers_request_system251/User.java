@@ -36,7 +36,7 @@ public class User {
     // ------------------------------
     public static User login(String id, String pass) {
         // Attempt to read the users file
-        try (BufferedReader br = new BufferedReader(new FileReader("/Users/lena/Desktop/users.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("data/users.txt"))) {
 
             String line;
             // Read the file line by line
@@ -75,4 +75,48 @@ public class User {
         // No matching user found
         return null;
     }
+   //=============================================================================
+  
+    //Jory 
+   //method for User login test
+        public static User login(BufferedReader reader, String id, String pass) {
+        try {
+            String line;
+            // Read the file line by line
+            while ((line = reader.readLine()) != null) {
+
+                String[] parts = line.split(",");        // Split each line into parts
+                // Skip the line if it doesn't contain exactly 3 parts
+                if (parts.length != 3) continue;
+
+                String role = parts[0].trim();           // Extract role from file
+                String fileId = parts[1].trim();         // Extract user ID from file
+                String filePass = parts[2].trim();       // Extract password from file
+
+                // If ID or password do not match, skip this user
+                if (!fileId.equals(id) || !filePass.equals(pass))
+                    continue;
+
+                // Create and return the correct user type based on the role
+                switch (role) {
+                    case "student":
+                        return new Student(role, fileId, filePass);
+
+                    case "institute":
+                        return new InstituteStaff(role, fileId, filePass);
+
+                    case "dean": 
+                        return new AdmissionOffice(role, fileId, filePass);
+                }
+            }
+
+        } catch (Exception e) {
+            // Handle any errors that occur while reading the file
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        // No matching user found
+        return null;
+    }
+           
 }
