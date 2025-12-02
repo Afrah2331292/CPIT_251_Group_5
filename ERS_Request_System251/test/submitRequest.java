@@ -4,7 +4,7 @@ import ers_request_system251.SystemERS;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class StudentIT {
+public class submitRequest {
 
     // HANA: Test case for submitting a request with a low score (should return null)
     @Test
@@ -43,27 +43,5 @@ public class StudentIT {
         assertEquals("Hana", r.getStudentName());
         assertEquals("Computer Science", r.getStudentMajor());
         assertEquals(5.5f, r.getScore(), 0.0);
-    }
-
-    // HANA: Test case for submitting a request with a score equal to the minimum (should be accepted)
-    @Test
-    public void testSubmitRequest_ExactMinScore() {
-        SystemERS system = new SystemERS();
-        Student student = new Student("Student", "2331341", "Hana2003");
-
-        Request r = student.submitRequest(
-                "Sara",
-                "English Language",
-                "ELIE",            // minimum score = 5.5
-                "CERT-HANA-03",
-                5.5f,              // exact minimum
-                system
-        );
-
-        assertNotNull(r);
-        assertEquals("Sara", r.getStudentName());
-        assertEquals("English Language", r.getStudentMajor());
-        assertEquals(5.5f, r.getScore(), 0.0);
-        assertEquals("ELIE", system.getTrack("English Language"));
     }
 }

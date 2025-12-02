@@ -27,7 +27,7 @@ public class UpdateValidStatusTest {
         
         new File("data").mkdirs();
         
-        // Format: ReqID, StudID, Name, Major, CERTIFICATE CODE, Score, Date, ValStatus, AppStatus
+        // Test file data (requests.txt)
         List<String> testData = Arrays.asList(
           "101,2335678,Yara,Computer Science,88797,8.0,01/12/2025,Submitted,Pending",
           "102,2339911,Sara,History,756,9.0,01/12/2025,Submitted,Pending"
@@ -36,7 +36,7 @@ public class UpdateValidStatusTest {
         FileManager.writeAll(realFile.getPath(), testData);
 
         system = new SystemERS();
-        System.out.println("Test Running by: Jory");   
+        
     }
 
     // -----------------------------------------------------------------
@@ -49,7 +49,7 @@ public class UpdateValidStatusTest {
         //Update request 101 to "Validated"
         system.updateValidationStatus("101", "Validated");
         
-        //Verify 
+        //ASSERTION 
         Request result = system.findRequestByID("101");
         
         assertNotNull("Request should exist", result);
@@ -66,7 +66,7 @@ public class UpdateValidStatusTest {
         //Update request 102 to "Rejected"
         system.updateValidationStatus("102", "Rejected");
         
-        //Verify
+        //ASSERTION 
         Request result = system.findRequestByID("102");
         
         assertNotNull("Request should exist", result);
@@ -83,13 +83,12 @@ public class UpdateValidStatusTest {
         //update non-existent ID
         system.updateValidationStatus("999", "Validated");
         
-        //Verify: Should be null
+        //ASSERTION 
         Request result = system.findRequestByID("999");
         assertNull("Invalid ID should return null", result);
     }
 
     // -----------------------------------------------------------------
-
     @After
     public void tearDown() {
         if (realFile.exists()) {

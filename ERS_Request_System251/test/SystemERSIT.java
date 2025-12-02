@@ -122,8 +122,5 @@ public void testFetchVerifiedRequests() {
                          ", Student: " + request.getStudentName() +
                          ", Status: " + request.getValidationStatus());
     }
-}
-
-
-
+  }
 }
